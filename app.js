@@ -5,7 +5,7 @@ var socketId;
 
 var onMIDIMessage = function(message){
   var buffer = message.data.buffer;
-  chrome.sockets.udp.send(socketId, buffer, '127.0.0.1', 1337, function(sendInfo){
+  chrome.sockets.udp.send(socketId, buffer, '192.168.0.14', 1337, function(sendInfo){
     console.log("sending info through udp" + buffer);
   });
 };
@@ -34,7 +34,7 @@ chrome.sockets.udp.create(properties, function(createInfo){
   chrome.sockets.udp.onReceive.addListener(function(data){
     console.log(data);
   });
-  chrome.sockets.udp.bind(socketId, '0.0.0.0', 0, function(r){
+  chrome.sockets.udp.bind(socketId, '0.0.0.0', 1338, function(r){
     appStatus.innerHTML = "socket " + socketId + " bound to port";
   });
 });
