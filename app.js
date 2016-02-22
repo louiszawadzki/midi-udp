@@ -1,8 +1,9 @@
-var adress = "192.168.0.13";
-var port = 1337;
 var appStatus = document.getElementById("status");
 
-// sound from MIDI signal
+/*
+ * sound from MIDI signal
+ */
+
 var audioContext = new AudioContext();
 var gain = audioContext.createGain();
 var oscillator = audioContext.createOscillator();
@@ -40,13 +41,19 @@ var MIDIToSound = function(buffer){
   }
 }
 
-// Getting MIDI
+
+
+/*
+ * Getting MIDI
+ */
+
 var socketId; //preparing for later storing the value
-var onMIDIMessage = function(message){
+onMIDIMessage = function(message){
+  var address = document.getElementById("address").value;
   var buffer = message.data.buffer;
   MIDIToSound(buffer);
-  chrome.sockets.udp.send(socketId, buffer, adress, port, function(sendInfo){
-    console.log("sending info through udp" + buffer);
+  chrome.sockets.udp.send(socketId, buffer, address, 1337, function(sendInfo){
+    //console.log("sending info through udp" + buffer);
   });
 };
 var onMIDISuccess = function(midiAccess){
@@ -57,16 +64,21 @@ var onMIDISuccess = function(midiAccess){
   };
 };
 var onMIDIFailure = function(e){
-  console.log("fail" + e);
+  {
+    appStatus = "MIDI failed :" + e;
 };
 if (navigator.requestMIDIAccess) {
-    console.log("h");
     navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 } else {
-    console.log("No MIDI support in your browser.");
+    appStatus.innerHTML = "No MIDI support in your browser.";
 }
 
-// UDP Connection
+
+
+/*
+ * UDP Connection
+ */
+
 var properties = {};
 chrome.sockets.udp.create(properties, function(createInfo){
   socketId = createInfo.socketId;
@@ -75,9 +87,8 @@ chrome.sockets.udp.create(properties, function(createInfo){
     console.log(data);
     MIDIToSound(data.data);
   });
-  chrome.sockets.udp.bind(socketId, '0.0.0.0', port, function(r){
-    appStatus.innerHTML = "socket " + socketId + " bound to port 1337";
+  chrome.sockets.udp.bind(socketId, '0.0.0.0', 1337, function(r){
+    appStatus.innerHTML = "using port 1337";
   });
 });
-
 
