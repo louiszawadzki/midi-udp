@@ -64,8 +64,7 @@ var onMIDISuccess = function(midiAccess){
   };
 };
 var onMIDIFailure = function(e){
-  {
-    appStatus = "MIDI failed :" + e;
+    appStatus.innerHTML = "MIDI failed :" + e;
 };
 if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
