@@ -2,7 +2,7 @@ var appStatus = document.getElementById("status");
 // Getting MIDI
 
 // UDP Connection
-/var properties = {};
+var properties = {};
 chrome.sockets.udp.create(properties, function(createInfo){
   var socketId = createInfo.socketId;
   appStatus.innerHTML = "socket created";
