@@ -1,3 +1,5 @@
+var adress = "192.168.0.13";
+var port = 1337;
 var appStatus = document.getElementById("status");
 
 // Getting MIDI
@@ -5,7 +7,7 @@ var socketId;
 
 var onMIDIMessage = function(message){
   var buffer = message.data.buffer;
-  chrome.sockets.udp.send(socketId, buffer, '192.168.0.14', 1337, function(sendInfo){
+  chrome.sockets.udp.send(socketId, buffer, adress, port, function(sendInfo){
     console.log("sending info through udp" + buffer);
   });
 };
@@ -34,8 +36,8 @@ chrome.sockets.udp.create(properties, function(createInfo){
   chrome.sockets.udp.onReceive.addListener(function(data){
     console.log(data);
   });
-  chrome.sockets.udp.bind(socketId, '0.0.0.0', 1338, function(r){
-    appStatus.innerHTML = "socket " + socketId + " bound to port";
+  chrome.sockets.udp.bind(socketId, '0.0.0.0', port, function(r){
+    appStatus.innerHTML = "socket " + socketId + " bound to port 1337";
   });
 });
 
