@@ -7,7 +7,8 @@ var audioContext = new AudioContext();
 var gain = audioContext.createGain();
 var oscillator = audioContext.createOscillator();
 gain.gain.value = 0;
-oscillator.connect(gain).connect(audioContext.destination);
+oscillator.connect(gain);
+gain.connect(audioContext.destination);
 oscillator.start();
 
 var noteToFrequency = function(note) {
